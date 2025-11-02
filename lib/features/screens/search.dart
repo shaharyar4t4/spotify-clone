@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:spotify/core/app_color/color.dart';
 
 class Search extends StatelessWidget {
   const Search({super.key});
@@ -6,6 +7,7 @@ class Search extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: primary,
       body: SafeArea(
         child: Text(
           'Search Screen',

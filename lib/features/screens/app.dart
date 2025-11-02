@@ -18,16 +18,17 @@ class _AppState extends State<App> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: primary,
+      body: Tab[currentTabIndex],
 
       //body --> show the current tab page
-      body: Tab[currentTabIndex],
+
       // Navigation Bar
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: currentTabIndex,
         onTap: (currentIndex) {
           print("Current page index <--- $currentIndex");
           currentTabIndex = currentIndex;
+          setState(() {});
         },
         selectedItemColor: navigation_selected_item,
         unselectedItemColor: navigation_unselected_item,
