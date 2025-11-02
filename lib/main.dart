@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:spotify/view_home.dart';
+import 'package:spotify/screens/home.dart';
 
 void main() {
   runApp(const MyApp());
