@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:spotify/features/screens/app.dart';
 import 'package:spotify/features/screens/home.dart';
 
 void main() {
@@ -14,7 +15,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Spotify Music app',
-      home: ViewHome(),
+      home: App(),
     );
   }
 }
