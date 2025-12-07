@@ -9,9 +9,15 @@ class Home extends StatelessWidget {
     return Scaffold(
       backgroundColor: primary,
       body: SafeArea(
-        child: Text(
-          'Home Screen',
-          style: TextStyle(fontSize: 24, color: Colors.white),
+        child: Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: [Colors.blueGrey.shade300, Colors.black],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+              stops: [0.1, 0.3],
+            ),
+          ),
         ),
       ),
     );
