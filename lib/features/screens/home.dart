@@ -34,10 +34,11 @@ class Home extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.all(10),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
-            height: 100,
-            width: 100,
+            height: 200,
+            width: 200,
             child: Image.network(music.imageUrl, fit: BoxFit.cover,)),
           Text(music.name, style: TextStyle(color: Colors.white),),
           Text(music.desc, style: TextStyle(color: Colors.white70),),
@@ -47,21 +48,32 @@ class Home extends StatelessWidget {
   }
   Widget createMusicList(String label){
     List<Music> musicList = MusicOperation.getMusics();
-    return Container(
-      height: 200,
-      
-      child: ListView.builder(
-        scrollDirection: Axis.horizontal,
-        itemBuilder: (ctx, index){
-          return createMusic(musicList[index]);
-      }, itemCount: musicList.length,),
+    return Padding(
+      padding: const EdgeInsets.only(left: 10),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start, 
+        children:[
+          Text(label, style: TextStyle(
+            color: Colors.white,
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+          ),),
+          Container(
+          height: 300,
+          
+          child: ListView.builder(
+            scrollDirection: Axis.horizontal,
+            itemBuilder: (ctx, index){
+              return createMusic(musicList[index]);
+          }, itemCount: musicList.length,),
+        ),] 
+      ),
     );
   }
 
   Widget createGrid(){
     return Container(
-      height: 400,
-    
+      height: 280,
       child: GridView.count(
         crossAxisCount: 2,
         childAspectRatio: 5/2,
@@ -94,22 +106,26 @@ class Home extends StatelessWidget {
     return Scaffold(
       backgroundColor: primary,
       body: SafeArea(
-        child: Container(
-          padding: const EdgeInsets.all(10.0),
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              colors: [Colors.blueGrey.shade300, Colors.black],
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-              stops: [0.1, 0.3],
+        child: SingleChildScrollView(
+          child: Container(
+            padding: const EdgeInsets.all(10.0),
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                colors: [Colors.blueGrey.shade300, Colors.black],
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+                stops: [0.1, 0.3],
+              ),
             ),
+            child: Column(children: [
+              createAppBar("Good Morning"),
+              const SizedBox(height: 20,),
+              createGrid(),
+              createMusicList("Made for You"),
+              createMusicList("Popular Playlists"),
+
+            ],),
           ),
-          child: Column(children: [
-            createAppBar("Good Morning"),
-            const SizedBox(height: 20,),
-            createGrid(),
-            createMusicList("Made for You"),
-          ],),
         ),
       ),
     );
