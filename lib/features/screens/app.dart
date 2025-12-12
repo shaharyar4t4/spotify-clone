@@ -1,3 +1,4 @@
+import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:spotify/core/app_color/color.dart';
 import 'package:spotify/features/models/music.dart';
@@ -13,23 +14,26 @@ class App extends StatefulWidget {
 }
 
 class _AppState extends State<App> {
- 
+  AudioPlayer _audioPlayer = new AudioPlayer();
   var Tab = [];
   int currentTabIndex = 0;
+  bool isPlaying = false;
   Music? music;
 
-
- Widget minplayer(Music? music){
-  this.music = music;
-  setState(() {
-    
-  });
-    if(music==null){
+  Widget minplayer(Music? music, {bool stop = false}) {
+    this.music = music;
+    setState(() {});
+    if (music == null) {
       return SizedBox();
     }
-    Size deviceSize= MediaQuery.of(context).size;
+
+    if (stop) {
+      isPlaying = false;
+      _audioPlayer.stop();
+    }
+    Size deviceSize = MediaQuery.of(context).size;
     return AnimatedContainer(
-      duration: const Duration(milliseconds: 500), 
+      duration: const Duration(milliseconds: 500),
       color: Colors.blueGrey,
       width: deviceSize.width,
       height: 50,
@@ -37,11 +41,23 @@ class _AppState extends State<App> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Image.network(music.imageUrl, fit: BoxFit.cover),
-          Text(music.name, style: TextStyle(color: Colors.white, fontSize: 20),),
-          IconButton(onPressed: (){}, icon: Icon(Icons.play_arrow, color: Colors.white,)),
+          Text(music.name, style: TextStyle(color: Colors.white, fontSize: 20)),
+          IconButton(
+            onPressed: () async {
+              isPlaying = !isPlaying;
+              if (isPlaying) {
+                await _audioPlayer.play(UrlSource(music.audioUrl));
+              } else {
+                await _audioPlayer.pause();
+              }
+              setState(() {});
+            },
+            icon: isPlaying
+                ? Icon(Icons.play_arrow, color: Colors.white)
+                : Icon(Icons.play_arrow, color: Colors.white),
+          ),
         ],
       ),
-
     );
   }
 
@@ -49,7 +65,7 @@ class _AppState extends State<App> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    Tab= [Home(minplayer), Search(), YourLiberay()];
+    Tab = [Home(minplayer), Search(), YourLiberay()];
   }
 
   @override
@@ -63,26 +79,30 @@ class _AppState extends State<App> {
       bottomNavigationBar: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-         minplayer(music),  
-        BottomNavigationBar(
-          currentIndex: currentTabIndex,
-          onTap: (currentIndex) {
-            print("Current page index <--- $currentIndex");
-            currentTabIndex = currentIndex;
-            setState(() {});
-          },
-          selectedItemColor: navigation_selected_item,
-          unselectedItemColor: navigation_unselected_item,
-          backgroundColor: navigation_bar,
-          items: [
-            BottomNavigationBarItem(icon: Icon(Icons.home), label: "Home"),
-            BottomNavigationBarItem(icon: Icon(Icons.search), label: "Search"),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.library_music),
-              label: "Your Library",
-            ),
-          ],
-        ),],
+          minplayer(music),
+          BottomNavigationBar(
+            currentIndex: currentTabIndex,
+            onTap: (currentIndex) {
+              print("Current page index <--- $currentIndex");
+              currentTabIndex = currentIndex;
+              setState(() {});
+            },
+            selectedItemColor: navigation_selected_item,
+            unselectedItemColor: navigation_unselected_item,
+            backgroundColor: navigation_bar,
+            items: [
+              BottomNavigationBarItem(icon: Icon(Icons.home), label: "Home"),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.search),
+                label: "Search",
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.library_music),
+                label: "Your Library",
+              ),
+            ],
+          ),
+        ],
       ),
     );
   }
