@@ -6,8 +6,9 @@ import 'package:spotify/features/models/category.dart';
 import 'package:spotify/features/models/music.dart';
 
 class Home extends StatelessWidget {
-  const Home({super.key});
   
+  Function _miniPlayer;
+  Home(this._miniPlayer);
   Widget createCategory( Category category){
     return Container(
       color: Colors.blueGrey.shade400,
@@ -39,7 +40,11 @@ class Home extends StatelessWidget {
           Container(
             height: 200,
             width: 200,
-            child: Image.network(music.imageUrl, fit: BoxFit.cover,)),
+            child: InkWell(
+              onTap: (){
+                _miniPlayer(music);
+              },
+              child: Image.network(music.imageUrl, fit: BoxFit.cover,))),
           Text(music.name, style: TextStyle(color: Colors.white),),
           Text(music.desc, style: TextStyle(color: Colors.white70),),
         ],

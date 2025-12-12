@@ -13,12 +13,17 @@ class App extends StatefulWidget {
 }
 
 class _AppState extends State<App> {
-  final Tab = [Home(), Search(), YourLiberay()];
+ 
+  var Tab = [];
   int currentTabIndex = 0;
   Music? music;
 
 
  Widget minplayer(Music? music){
+  this.music = music;
+  setState(() {
+    
+  });
     if(music==null){
       return SizedBox();
     }
@@ -32,12 +37,19 @@ class _AppState extends State<App> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Image.network(music.imageUrl, fit: BoxFit.cover),
-          Text(music.name, style: TextStyle(color: Colors.white),),
+          Text(music.name, style: TextStyle(color: Colors.white, fontSize: 20),),
           IconButton(onPressed: (){}, icon: Icon(Icons.play_arrow, color: Colors.white,)),
         ],
       ),
 
     );
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    Tab= [Home(minplayer), Search(), YourLiberay()];
   }
 
   @override
